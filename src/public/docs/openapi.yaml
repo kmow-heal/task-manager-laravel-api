@@ -1,0 +1,247 @@
+openapi: 3.0.3
+info:
+  title: 'Task manager API'
+  description: 'Simple REST API using the Laravel framework to manage a task list'
+  version: 1.0.0
+servers:
+  -
+    url: 'http://localhost:8000'
+paths:
+  /api/login:
+    post:
+      summary: 'Endpoint for get access token.'
+      operationId: endpointForGetAccessToken
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  description: 'Must be a valid email address.'
+                  example: nrogahn@example.net
+                  nullable: false
+                password:
+                  type: string
+                  description: 'Must be at least 3 characters.'
+                  example: '{jmPgNG]53q'
+                  nullable: false
+              required:
+                - email
+                - password
+      security: []
+  /api/logout:
+    post:
+      summary: 'Endpoint for delete all access tokens'
+      operationId: endpointForDeleteAllAccessTokens
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+  /api/register:
+    post:
+      summary: 'Endpoint for create new user'
+      operationId: endpointForCreateNewUser
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: 'Must not be greater than 255 characters. Must be at least 3 characters.'
+                  example: njzepmbzaxbxjly
+                  nullable: false
+                email:
+                  type: string
+                  description: 'Must be a valid email address. Must not be greater than 255 characters.'
+                  example: hardy.stamm@example.org
+                  nullable: false
+                password:
+                  type: string
+                  description: 'Must be at least 8 characters.'
+                  example: 'f0HRC|bg*%N2'
+                  nullable: false
+              required:
+                - name
+                - email
+                - password
+      security: []
+  /api/tasks:
+    get:
+      summary: 'Endpoint for view all tasks.'
+      operationId: endpointForViewAllTasks
+      description: ''
+      parameters:
+        -
+          in: query
+          name: is_done
+          description: 'Optional. Filter by done task.'
+          example: true
+          required: false
+          schema:
+            type: boolean
+            description: 'Optional. Filter by done task.'
+            example: true
+            nullable: false
+        -
+          in: query
+          name: include
+          description: 'Optional. Load relationships.'
+          example: user
+          required: false
+          schema:
+            type: string
+            description: 'Optional. Load relationships.'
+            example: user
+            nullable: false
+        -
+          in: query
+          name: page
+          description: 'Optional. Paginate page.'
+          example: 1
+          required: false
+          schema:
+            type: integer
+            description: 'Optional. Paginate page.'
+            example: 1
+            nullable: false
+      responses:
+        401:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: Unauthenticated.
+                properties:
+                  message:
+                    type: string
+                    example: Unauthenticated.
+      tags:
+        - Endpoints
+    post:
+      summary: 'Endpoint for create new task'
+      operationId: endpointForCreateNewTask
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: 'Must not be greater than 100 characters. Must be at least 3 characters.'
+                  example: mwknowsazmzsysbliwtyfvogl
+                  nullable: false
+                description:
+                  type: string
+                  description: 'Must not be greater than 255 characters. Must be at least 3 characters.'
+                  example: 'Voluptate incidunt qui est.'
+                  nullable: false
+              required:
+                - name
+                - description
+  '/api/tasks/{id}':
+    get:
+      summary: 'Endpoint for view some task only current user'
+      operationId: endpointForViewSomeTaskOnlyCurrentUser
+      description: ''
+      parameters: []
+      responses:
+        401:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: Unauthenticated.
+                properties:
+                  message:
+                    type: string
+                    example: Unauthenticated.
+      tags:
+        - Endpoints
+    put:
+      summary: 'Endpoint for update task'
+      operationId: endpointForUpdateTask
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: 'Must not be greater than 100 characters. Must be at least 3 characters.'
+                  example: kridhnilqyggfeqxzttsmterwzzqlfqubxjmzisksgsdphodkomexhihjlhnlbetefdauosolwdtujiegzy
+                  nullable: false
+                description:
+                  type: string
+                  description: 'Must not be greater than 255 characters. Must be at least 3 characters.'
+                  example: 'Perspiciatis animi eius sit alias.'
+                  nullable: false
+                is_done:
+                  type: boolean
+                  description: ''
+                  example: false
+                  nullable: false
+    delete:
+      summary: 'Endpoint for delete task'
+      operationId: endpointForDeleteTask
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+    parameters:
+      -
+        in: path
+        name: id
+        description: 'The ID of the task.'
+        example: 1
+        required: true
+        schema:
+          type: integer
+tags:
+  -
+    name: Endpoints
+    description: ''
+components:
+  securitySchemes:
+    default:
+      type: http
+      scheme: bearer
+      description: 'You can retrieve your token by visiting your dashboard and clicking <b>Generate API token</b>.'
+security:
+  -
+    default: []

@@ -1,0 +1,45 @@
+version: "3.8"
+services:
+  app:
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    image: laravel-app
+    container_name: app-task-manager
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./src:/var/www/html
+    networks:
+      - app-net
+
+  db:
+    image: postgres:15
+    container_name: postgres-task-manager
+    environment:
+      POSTGRES_USER: task-manager
+      POSTGRES_PASSWORD: task-manager
+      POSTGRES_DB: task-manager
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./db:/var/lib/postgresql/data
+    networks:
+      - app-net
+
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: pgadmin_container
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@task-manager.com
+      PGADMIN_DEFAULT_PASSWORD: password
+    ports:
+      - "8080:80"
+    restart: unless-stopped
+    networks:
+      - app-net
+
+networks:
+  app-net:
+    driver: bridge
